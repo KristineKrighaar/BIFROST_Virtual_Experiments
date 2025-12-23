@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#SBATCH --job-name=BIFROST_Eres
+#SBATCH --error=err_BIFROST_Eres.stderr
+#SBATCH --output=out_BIFROST_Eres.stdout
+#SBATCH --nodes 1-1
+#SBATCH --partition quark
+#SBATCH --time=23:59:00
+# the --exclusive is needed when running OpenMPI
+# it will allocate 1x12 core per node
+#SBATCH --exclusive
+
+NUMCORES=`echo "$SLURM_NNODES 56 * p "| dc`
+
+
+source /etc/profile.d/modules.sh
+module avail
+module purge
+export OMPI_MCA_btl=^vader,tcp,openib
+module load mcstas/3.2
+module load gcc/10.2.0
+module load openmpi/4.0_gcc1020
+
+### Set up mcrun line
+# mcrun -c --mpi=$NUMCORES -d test_perspective_pulse_data_1 -n 1e11 BL18_SENJU_generated.instr L_min=2.2 L_max=2.21
+
+mcrun -c --mpi=$NUMCORES backend_Pb_3t.instr -d Pb_290K_20_ -n 1000000  A4=20  A3=$i

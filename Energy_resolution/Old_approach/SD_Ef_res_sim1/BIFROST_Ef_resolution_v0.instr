@@ -1,0 +1,799 @@
+/*******************************************************************************
+* Instrument: template_simple
+*
+* %I
+* Written by: your name (email)
+* Date: current date
+* Origin: your institution
+* %INSTRUMENT_SITE: Templates
+*
+* instrument short description
+*
+* %D
+* instrument description
+*
+* Example: parameters=values
+*
+* %P
+* Par1: [unit] Parameter1 description
+*
+* %L
+* <reference/HTML link>
+*
+* %E
+*******************************************************************************/
+DEFINE INSTRUMENT template_simple(A3=0, A4=45)
+
+DECLARE
+%{
+
+double u;
+%}
+
+USERVARS
+%{
+%}
+
+INITIALIZE
+%{
+u = 0.00001;
+
+%}
+
+TRACE
+
+COMPONENT origin = Progress_bar()
+AT (0, 0, 0) RELATIVE ABSOLUTE
+
+// insert components here (e.g. Insert -> Source -> ...)
+
+/******************************************************* SAMPLE POSITION *************************************************/
+
+COMPONENT Sample_pos = Arm()
+AT (0, 0, 0.58000) RELATIVE origin
+ROTATED (0, A3, 0) RELATIVE origin
+
+COMPONENT Sample_arm = Arm()
+AT (0, 0, 0) RELATIVE Sample_pos 
+ROTATED (0, A4, 0) RELATIVE Sample_pos
+
+COMPONENT source_simple = Source_simple(
+    xwidth=0.005, 
+    yheight=0.005, 
+    dist=1.1, 
+    focus_xw=0.2, 
+    focus_yh=0.15, 
+    E0=3.85, 
+    dE=1.3, 
+    target_index=8)
+AT (0, 0, 0) RELATIVE Sample_arm
+
+
+/*COMPONENT Div2d_sample_B = Divergence_monitor(
+    nh = 200, nv = 200, filename = "Div2d_sample_B", xwidth = sampleSizeX,
+    yheight = sampleSizeY, maxdiv_h = 0.750000, maxdiv_v = 0.750000,restore_neutron=1)
+  AT (0, 0,0.580000+sample_radius*2+u) RELATIVE EndOfelement_1
+  EXTEND
+    %{
+    x_div = RAD2DEG*atan2(vx,vz);
+    y_div = RAD2DEG*atan2(vy,vz);
+    if (SCATTERED) flag=1; else flag=0;
+    %}*/
+
+/*COMPONENT Div2d_sample = Divergence_monitor(
+    nh = 100, nv = 100, filename = "Div2d_sample", xwidth = sampleSizeX, restore_neutron=1,
+    yheight = sampleSizeY, maxdiv_h = 2.250000, maxdiv_v = 2.250000)
+  AT (0, 0,u) RELATIVE PREVIOUS
+
+COMPONENT PSD_sample_large = PSD_monitor(
+    nx = 60, ny = 60, filename = "PSD_sample_large", restore_neutron=1,
+    xwidth = 6*sampleSizeX, yheight = 6*sampleSizeY)
+  AT (0, 0,u) RELATIVE PREVIOUS
+
+COMPONENT PSD_sample_small = PSD_monitor(
+    nx = 20, ny = 20, filename = "PSD_sample_small", restore_neutron=1,
+    xwidth = sampleSizeX, yheight = sampleSizeY)
+  AT (0, 0,u) RELATIVE PREVIOUS*/
+
+
+  
+
+/********************************************** Backend start*******************************************/
+
+/********************************** 2.7 meV Analyzer*****************************/
+
+ COMPONENT ToF_AfterSample = TOF_monitor(
+    nt = 500, filename = "ToF_AfterSampel.dat",restore_neutron=1, xwidth = 0.1,
+    yheight = 0.1, tmax = 250000)
+ AT (0, 0,  0.9) RELATIVE Sample_arm
+  
+COMPONENT Lmon_AfterSample = L_monitor(
+    nL = 200, filename = "Lmon_AfterSampel.dat", xwidth = 0.1, restore_neutron=1,
+    yheight = 0.1, Lmin = 0, Lmax = 15)
+  AT (0, 0,u) RELATIVE PREVIOUS
+
+COMPONENT ToF_Lambda_After_sampel = TOFLambda_monitor(
+    nL=100, 
+    nt=25000, 
+    tmin=0, 
+    tmax=250000, 
+    filename="ToF_Lambda_After_sampel.dat", 
+    xwidth=0.05, 
+    yheight=0.0127, 
+    Lmin=0, 
+    Lmax=6, 
+    restore_neutron=1)
+AT (0, 0, u) RELATIVE PREVIOUS
+
+
+COMPONENT Emon_AfterSample = E_monitor(
+    nE=300, 
+    filename="Emon_AfterSampel.dat", 
+    xwidth=0.1, 
+    yheight=0.1, 
+    Emin=0, 
+    Emax=50, 
+    restore_neutron=1)
+AT (0, 0, u) RELATIVE PREVIOUS
+
+COMPONENT arm_mono_2p7 = Arm()
+AT (0, 0, 1.1) RELATIVE Sample_arm
+ROTATED (0, 0, 0) RELATIVE Sample_arm
+
+COMPONENT mono2p7_1 = Monochromator_flat(
+    zwidth=0.134, 
+    yheight=0.012,
+    DM = 3.355, 
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.032763, -0.027320) RELATIVE arm_mono_2p7 
+ROTATED (-(90-53.368), 90 , 0) RELATIVE arm_mono_2p7 
+
+COMPONENT mono2p7_2 = Monochromator_flat(
+    zwidth=0.134, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.022028, -0.017992) RELATIVE arm_mono_2p7 
+ROTATED (-(90-53.951), 90 , 0) RELATIVE arm_mono_2p7 
+
+COMPONENT mono2p7_3 = Monochromator_flat(
+    zwidth=0.134, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.011106, -0.008884) RELATIVE arm_mono_2p7 
+ROTATED (-(90-54.534), 90 , 0) RELATIVE arm_mono_2p7
+
+COMPONENT mono2p7_4 = Monochromator_flat(
+    zwidth=0.134, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0, 0) RELATIVE arm_mono_2p7 
+ROTATED (-(90-55.117), 90 , 0) RELATIVE arm_mono_2p7 
+
+COMPONENT mono2p7_5 = Monochromator_flat(
+    zwidth=0.134, 
+    yheight=0.012, 
+    DM=3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.011284, 0.008656) RELATIVE arm_mono_2p7 
+ROTATED (-(90-55.700), 90 , 0) RELATIVE arm_mono_2p7 
+
+COMPONENT mono2p7_6 = Monochromator_flat(
+    zwidth=0.134, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.022742, 0.017081) RELATIVE arm_mono_2p7 
+ROTATED (-(90-56.283), 90 , 0) RELATIVE arm_mono_2p7 
+
+COMPONENT mono2p7_7 = Monochromator_flat(
+    zwidth=0.134, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.034369, 0.025270) RELATIVE arm_mono_2p7 
+ROTATED (-(90-56.867), 90 , 0) RELATIVE arm_mono_2p7
+
+/********************************** 3.2 meV Analyzer*****************************/
+
+COMPONENT arm_mono_3p2 = Arm()
+AT (0, 0, 1.238) RELATIVE Sample_arm
+ROTATED (0, 0, 0) RELATIVE Sample_arm
+
+COMPONENT mono3p2_1 = Monochromator_flat(
+    zwidth=0.14, 
+    yheight=0.014,
+    DM = 3.355, 
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.033726, -0.033390) RELATIVE arm_mono_3p2 
+ROTATED (-(90-47.292), 90 , 0) RELATIVE arm_mono_3p2
+
+COMPONENT mono3p2_2 = Monochromator_flat(
+    zwidth=0.14, 
+    yheight=0.014, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.022693, -0.022051) RELATIVE arm_mono_3p2
+ROTATED (-(90-47.827), 90 , 0) RELATIVE arm_mono_3p2 
+
+COMPONENT mono3p2_3 = Monochromator_flat(
+    zwidth=0.14, 
+    yheight=0.014, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.011449, -0.010919 ) RELATIVE arm_mono_3p2 
+ROTATED (-(90-48.361), 90 , 0) RELATIVE arm_mono_3p2
+
+COMPONENT mono3p2_4 = Monochromator_flat(
+    zwidth=0.14, 
+    yheight=0.014, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0, 0) RELATIVE arm_mono_3p2 
+ROTATED (-(90-48.896), 90 , 0) RELATIVE arm_mono_3p2 
+
+COMPONENT mono3p2_5 = Monochromator_flat(
+    zwidth=0.14, 
+    yheight=0.014, 
+    DM=3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.011651, 0.010704) RELATIVE arm_mono_3p2 
+ROTATED (-(90-49.430), 90 , 0) RELATIVE arm_mono_3p2 
+
+COMPONENT mono3p2_6 = Monochromator_flat(
+    zwidth=0.14, 
+    yheight=0.014, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.023500, 0.021189) RELATIVE arm_mono_3p2 
+ROTATED (-(90-49.965), 90 , 0) RELATIVE arm_mono_3p2
+
+COMPONENT mono3p2_7 = Monochromator_flat(
+    zwidth=0.14, 
+    yheight=0.014, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.035542, 0.031450) RELATIVE arm_mono_3p2 
+ROTATED (-(90-50.500), 90 , 0) RELATIVE arm_mono_3p2
+
+/*********************************** 3.8 meV Analyzer*****************************/
+
+COMPONENT arm_mono_3p8 = Arm()
+AT (0, 0, 1.342) RELATIVE Sample_arm
+ROTATED (0, 0, 0) RELATIVE Sample_arm
+
+COMPONENT mono3p8_1 = Monochromator_flat(
+    zwidth=0.1562, 
+    yheight=0.0115,
+    DM = 3.355, 
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.034636, -0.040305) RELATIVE arm_mono_3p8
+ROTATED (-(90-42.223), 90 , 0) RELATIVE arm_mono_3p8
+
+COMPONENT mono3p8_2 = Monochromator_flat(
+    zwidth=0.1562, 
+    yheight=0.0115, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.026179, -0.030057) RELATIVE arm_mono_3p8
+ROTATED (-(90-42.604), 90 , 0) RELATIVE arm_mono_3p8 
+
+COMPONENT mono3p8_3 = Monochromator_flat(
+    zwidth=0.1562, 
+    yheight=0.0115, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.017586, -0.019922) RELATIVE arm_mono_3p8 
+ROTATED (-(90-42.985), 90 , 0) RELATIVE arm_mono_3p8
+
+COMPONENT mono3p8_4 = Monochromator_flat(
+    zwidth=0.1562, 
+    yheight=0.0115, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.008859, -0.009903) RELATIVE arm_mono_3p8
+ROTATED (-(90-43.366), 90 , 0) RELATIVE arm_mono_3p8 
+
+COMPONENT mono3p8_5 = Monochromator_flat(
+    zwidth=0.1562, 
+    yheight=0.0115, 
+    DM=3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0, 0) RELATIVE arm_mono_3p8 
+ROTATED (-(90-43.747), 90 , 0) RELATIVE arm_mono_3p8
+
+COMPONENT mono3p8_6 = Monochromator_flat(
+    zwidth=0.1562, 
+    yheight=0.0115, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.008990, 0.009784) RELATIVE arm_mono_3p8 
+ROTATED (-(90-44.128), 90 , 0) RELATIVE arm_mono_3p8
+
+COMPONENT mono3p8_7 = Monochromator_flat(
+    zwidth=0.1562, 
+    yheight=0.0115, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.018110, 0.019447) RELATIVE arm_mono_3p8 
+ROTATED (-(90-44.509), 90 , 0) RELATIVE arm_mono_3p8
+
+COMPONENT mono3p8_8 = Monochromator_flat(
+    zwidth=0.1562, 
+    yheight=0.0115, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.027357, 0.028989) RELATIVE arm_mono_3p8 
+ROTATED (-(90-44.890), 90 , 0) RELATIVE arm_mono_3p8
+
+COMPONENT mono3p8_9 = Monochromator_flat(
+    zwidth=0.1562, 
+    yheight=0.0115, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.036731, 0.038406) RELATIVE arm_mono_3p8 
+ROTATED (-(90-45.271), 90 , 0) RELATIVE arm_mono_3p8
+
+/*********************************** 4.4 meV Analyzer*****************************/
+
+COMPONENT arm_mono_4p4 = Arm()
+AT (0, 0, 1.443) RELATIVE Sample_arm
+ROTATED (0, 0, 0) RELATIVE Sample_arm
+
+COMPONENT mono4p4_1 = Monochromator_flat(
+    zwidth=0.1652, 
+    yheight=0.012,
+    DM = 3.355, 
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.034523, -0.045307) RELATIVE arm_mono_4p4
+ROTATED (-(90-38.571), 90 , 0) RELATIVE arm_mono_4p4
+
+COMPONENT mono4p4_2 = Monochromator_flat(
+    zwidth=0.1652, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.026103, -0.033821) RELATIVE arm_mono_4p4
+ROTATED (-(90-38.925), 90 , 0) RELATIVE arm_mono_4p4
+
+COMPONENT mono4p4_3 = Monochromator_flat(
+    zwidth=0.1652, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.017541, -0.022440) RELATIVE arm_mono_4p4
+ROTATED (-(90-39.278), 90 , 0) RELATIVE arm_mono_4p4
+
+COMPONENT mono4p4_4 = Monochromator_flat(
+    zwidth=0.1652, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.008840, -0.011166) RELATIVE arm_mono_4p4
+ROTATED (-(90-39.632), 90 , 0) RELATIVE arm_mono_4p4
+
+COMPONENT mono4p4_5 = Monochromator_flat(
+    zwidth=0.1652, 
+    yheight=0.012, 
+    DM=3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0, 0) RELATIVE arm_mono_4p4
+ROTATED (-(90-39.986), 90 , 0) RELATIVE arm_mono_4p4
+
+COMPONENT mono4p4_6 = Monochromator_flat(
+    zwidth=0.1652, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.008977, 0.011056) RELATIVE arm_mono_4p4
+ROTATED (-(90-40.340), 90 , 0) RELATIVE arm_mono_4p4
+
+COMPONENT mono4p4_7 = Monochromator_flat(
+    zwidth=0.1652, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.018090, 0.022000) RELATIVE arm_mono_4p4
+ROTATED (-(90-40.693), 90 , 0) RELATIVE arm_mono_4p4
+
+COMPONENT mono4p4_8 = Monochromator_flat(
+    zwidth=0.1652, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.027337, 0.032831) RELATIVE arm_mono_4p4 
+ROTATED (-(90-41.047), 90 , 0) RELATIVE arm_mono_4p4
+
+COMPONENT mono4p4_9 = Monochromator_flat(
+    zwidth=0.1652, 
+    yheight=0.012, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.036718, 0.043547) RELATIVE arm_mono_4p4
+ROTATED (-(90-41.401), 90 , 0) RELATIVE arm_mono_4p4
+
+/*********************************** 5.0 meV Analyzer*****************************/
+
+COMPONENT arm_mono_5p0 = Arm()
+AT (0, 0, 1.557) RELATIVE Sample_arm
+ROTATED (0, 0, 0) RELATIVE Sample_arm
+
+COMPONENT mono5p0_1 = Monochromator_flat(
+    zwidth=0.1756, 
+    yheight=0.0135,
+    DM = 3.355, 
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.034879, -0.050096) RELATIVE arm_mono_5p0
+ROTATED (-(90-35.746), 90 , 0) RELATIVE arm_mono_5p0
+
+COMPONENT mono5p0_2 = Monochromator_flat(
+    zwidth=0.1756, 
+    yheight=0.0135, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.026377, -0.037422) RELATIVE arm_mono_5p0
+ROTATED (-(90-36.077), 90 , 0) RELATIVE arm_mono_5p0
+
+COMPONENT mono5p0_3 = Monochromator_flat(
+    zwidth=0.1756, 
+    yheight=0.0135, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.017729, -0.024846) RELATIVE arm_mono_5p0
+ROTATED (-(90-36.409), 90 , 0) RELATIVE arm_mono_5p0
+
+COMPONENT mono5p0_4 = Monochromator_flat(
+    zwidth=0.1756, 
+    yheight=0.0135, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0.008937, -0.012372) RELATIVE arm_mono_5p0
+ROTATED (-(90-36.740), 90 , 0) RELATIVE arm_mono_5p0
+
+COMPONENT mono5p0_5 = Monochromator_flat(
+    zwidth=0.1756, 
+    yheight=0.0135, 
+    DM=3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, 0, 0) RELATIVE arm_mono_5p0
+ROTATED (-(90-37.072), 90 , 0) RELATIVE arm_mono_5p0
+
+COMPONENT mono5p0_6 = Monochromator_flat(
+    zwidth=0.1756, 
+    yheight=0.0135, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.009079, 0.012268) RELATIVE arm_mono_5p0
+ROTATED (-(90-37.403), 90 , 0) RELATIVE arm_mono_5p0
+
+COMPONENT mono5p0_7 = Monochromator_flat(
+    zwidth=0.1756, 
+    yheight=0.0135, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.018300, 0.024429) RELATIVE arm_mono_5p0
+ROTATED (-(90-37.735), 90 , 0) RELATIVE arm_mono_5p0
+
+COMPONENT mono5p0_8 = Monochromator_flat(
+    zwidth=0.1756, 
+    yheight=0.0135, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.027660, 0.036484) RELATIVE arm_mono_5p0
+ROTATED (-(90-38.066), 90 , 0) RELATIVE arm_mono_5p0
+
+COMPONENT mono5p0_9 = Monochromator_flat(
+    zwidth=0.1756, 
+    yheight=0.0135, 
+    DM = 3.355,
+    mosaich=50.0,
+    mosaicv=50.0)
+AT (0, -0.037160, 0.048429) RELATIVE arm_mono_5p0
+ROTATED (-(90-38.397), 90 , 0) RELATIVE arm_mono_5p0
+
+/******************************************** DETECTORS ***************************************/
+
+
+/************ 2.7 meV detectors for inelastic linewidths ****************/
+
+COMPONENT arm_det_2p7 = Arm()
+AT (0, -1.1156222, 0.6887723) RELATIVE Sample_arm
+
+COMPONENT tof_monitor_2p7_mid_res = TOF_monitor(
+    nt = 50000, 
+    filename="tof_det_2p7_mid_res.dat",  
+    xwidth = 0.05,
+    yheight = 0.0127,
+    tmin = 0, 
+    tmax = 250000, // 5.5*72.0*1e6/v_0
+    restore_neutron=1)  
+AT (0, 0, 0) RELATIVE arm_det_2p7
+ROTATED (55.117*2, 0, 0) RELATIVE arm_det_2p7
+
+COMPONENT e_monitor_2p7_mid_res= E_monitor(
+    nE=10000, 
+    filename="emon_det_2p7_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    Emin=0, 
+    Emax=10,
+    restore_neutron=1)
+AT (0, -0.00001, -0.00001) RELATIVE arm_det_2p7
+ROTATED (55.117*2, 0, 0) RELATIVE arm_det_2p7
+
+COMPONENT ToF_Lambda_det2p7 = TOFLambda_monitor(
+    nL=100, 
+    nt=25000, 
+    tmin=0, 
+    tmax=250000, 
+    filename="ToF_Lambda_det2p7.dat", 
+    xwidth=0.05, 
+    yheight=0.0127, 
+    Lmin=0, 
+    Lmax=6, 
+    restore_neutron=1)
+AT (0, -0.00002, -0.00002) RELATIVE arm_det_2p7
+ROTATED (55.117*2, 0, 0) RELATIVE arm_det_2p7
+
+COMPONENT psd_det_2p7_mid_res = PSD_monitor(
+    nx=100, 
+    ny=100, 
+    filename="PSD_Detector_2p7_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    restore_neutron=1)
+AT (0, -0.00003, -0.00003) RELATIVE arm_det_2p7
+ROTATED (55.117*2, 0, 0) RELATIVE arm_det_2p7
+
+/************ 3.2 meV detectors for inelastic linewidths ****************/
+
+COMPONENT arm_det_3p2 = Arm()
+AT (0, -1.3038505, 1.0595906) RELATIVE Sample_arm
+
+COMPONENT tof_monitor_3p2_mid_res = TOF_monitor(
+    nt = 25000, 
+    filename="tof_det_3p2_mid_res.dat",  
+    xwidth = 0.05,
+    yheight = 0.0127,
+    tmin = 0, 
+    tmax = 250000,  // 5.5*72.0*1e6/v_0
+    restore_neutron=1)  
+AT (0, 0, 0) RELATIVE arm_det_3p2
+ROTATED (48.896*2, 0, 0) RELATIVE arm_det_3p2
+
+COMPONENT e_monitor_3p2_mid_res= E_monitor(
+    nE=10000, 
+    filename="emon_det_3p2_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    Emin=0, 
+    Emax=10,
+    restore_neutron=1)
+AT (0, -0.00001, -0.00001) RELATIVE arm_det_3p2
+ROTATED (48.896*2, 0, 0) RELATIVE arm_det_3p2
+
+COMPONENT ToF_Lambda_det3p2 = TOFLambda_monitor(
+    nL=100, 
+    nt=25000, 
+    tmin=0, 
+    tmax=250000, 
+    filename="ToF_Lambda_det3p2.dat", 
+    xwidth=0.05, 
+    yheight=0.0127, 
+    Lmin=0, 
+    Lmax=6, 
+    restore_neutron=1)
+AT (0, -0.00002, -0.00002) RELATIVE arm_det_3p2
+ROTATED (48.896*2, 0, 0) RELATIVE arm_det_3p2
+
+COMPONENT psd_det_3p2_mid_res = PSD_monitor(
+    nx=100, 
+    ny=100, 
+    filename="PSD_Detector_3p2_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    restore_neutron=1)
+AT (0, -0.00003, -0.00003) RELATIVE arm_det_3p2
+ROTATED (48.896*2, 0, 0) RELATIVE arm_det_3p2
+
+/************ 3.8 meV detectors for inelastic linewidths ****************/
+
+COMPONENT arm_det_3p8 = Arm()
+AT (0, -1.4186415, 1.404098) RELATIVE Sample_arm
+
+COMPONENT tof_monitor_3p8_mid_res = TOF_monitor(
+    nt = 25000, 
+    filename="tof_det_3p8_mid_res.dat",  
+    xwidth = 0.05,
+    yheight = 0.0127,
+    tmin = 0, 
+    tmax = 250000,  // 5.5*72.0*1e6/v_0
+    restore_neutron=1)  
+AT (0, 0, 0) RELATIVE arm_det_3p8
+ROTATED (43.747*2, 0, 0) RELATIVE arm_det_3p8
+
+COMPONENT e_monitor_3p8_mid_res= E_monitor(
+    nE=10000, 
+    filename="emon_det_3p8_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    Emin=0, 
+    Emax=10,
+    restore_neutron=1)
+AT (0, -0.00001, 0.00001) RELATIVE arm_det_3p8
+ROTATED (43.747*2, 0, 0) RELATIVE arm_det_3p8
+
+COMPONENT ToF_Lambda_det3p8 = TOFLambda_monitor(
+    nL=100, 
+    nt=25000, 
+    tmin=0, 
+    tmax=250000, 
+    filename="ToF_Lambda_det3p8.dat", 
+    xwidth=0.05, 
+    yheight=0.0127, 
+    Lmin=0, 
+    Lmax=6, 
+    restore_neutron=1)
+AT (0, -0.00002, 0.00002) RELATIVE arm_det_3p8
+ROTATED (43.747*2, 0, 0) RELATIVE arm_det_3p8
+
+COMPONENT psd_det_3p8_mid_res = PSD_monitor(
+    nx=100, 
+    ny=100, 
+    filename="PSD_Detector_3p8_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    restore_neutron=1)
+AT (0, -0.00003, 0.00003) RELATIVE arm_det_3p8
+ROTATED (43.747*2, 0, 0) RELATIVE arm_det_3p8
+
+/************ 4.4 meV detectors for inelastic linewidths ****************/
+
+COMPONENT arm_det_4p4 = Arm()
+AT (0, -1.4977628, 1.7078537) RELATIVE Sample_arm
+
+COMPONENT tof_monitor_4p4_mid_res = TOF_monitor(
+    nt = 25000, 
+    filename="tof_det_4p4_mid_res.dat",  
+    xwidth = 0.05,
+    yheight = 0.0127,
+    tmin = 0, 
+    tmax = 250000, // 5.5*72.0*1e6/v_0
+    restore_neutron=1)  
+AT (0, 0, 0) RELATIVE arm_det_4p4
+ROTATED (39.986*2, 0, 0) RELATIVE arm_det_4p4
+
+COMPONENT e_monitor_4p4_mid_res= E_monitor(
+    nE=10000, 
+    filename="emon_det_4p4_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    Emin=0, 
+    Emax=10,
+    restore_neutron=1)
+AT (0, -0.00001, 0.00001) RELATIVE arm_det_4p4
+ROTATED (39.986*2, 0, 0) RELATIVE arm_det_4p4
+
+COMPONENT ToF_Lambda_det4p4 = TOFLambda_monitor(
+    nL=100, 
+    nt=25000, 
+    tmin=0, 
+    tmax=250000, 
+    filename="ToF_Lambda_det4p4.dat", 
+    xwidth=0.05, 
+    yheight=0.0127, 
+    Lmin=0, 
+    Lmax=6, 
+    restore_neutron=1)
+AT (0, -0.00002, 0.00002) RELATIVE arm_det_4p4
+ROTATED (39.986*2, 0, 0) RELATIVE arm_det_4p4
+
+COMPONENT psd_det_4p4_mid_res = PSD_monitor(
+    nx=100, 
+    ny=100, 
+    filename="PSD_Detector_4p4_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    restore_neutron=1)
+AT (0, -0.00003, 0.00003) RELATIVE arm_det_4p4
+ROTATED (39.986*2, 0, 0) RELATIVE arm_det_4p4
+
+/************ 5.0 meV detectors for inelastic linewidths ****************/
+
+COMPONENT arm_det_5p0 = Arm()
+AT (0, -1.5612402, 2.0004613) RELATIVE Sample_arm
+
+COMPONENT tof_monitor_5p0_mid_res = TOF_monitor(
+    nt = 25000, 
+    filename="tof_det_5p0_mid_res.dat",  
+    xwidth = 0.05,
+    yheight = 0.0127,
+    tmin = 0, 
+    tmax = 250000,  // 5.5*72.0*1e6/v_0
+    restore_neutron=1)  
+AT (0, 0, 0) RELATIVE arm_det_5p0
+ROTATED (37.072*2, 0, 0) RELATIVE arm_det_5p0
+
+COMPONENT e_monitor_5p0_mid_res= E_monitor(
+    nE=10000, 
+    filename="emon_det_5p0_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    Emin=0, 
+    Emax=10,
+    restore_neutron=1)
+AT (0, -0.00001, 0.00001) RELATIVE arm_det_5p0
+ROTATED (37.072*2, 0, 0) RELATIVE arm_det_5p0
+
+COMPONENT ToF_Lambda_det5p0 = TOFLambda_monitor(
+    nL=100, 
+    nt=25000, 
+    tmin=0, 
+    tmax=250000, 
+    filename="ToF_Lambda_det5p0.dat", 
+    xwidth=0.05, 
+    yheight=0.0127, 
+    Lmin=0, 
+    Lmax=6, 
+    restore_neutron=1)
+AT (0, -0.00002, 0.00002) RELATIVE arm_det_5p0
+ROTATED (37.072*2, 0, 0) RELATIVE arm_det_5p0
+
+COMPONENT psd_det_5p0_mid_res = PSD_monitor(
+    nx=100, 
+    ny=100, 
+    filename="PSD_Detector_5p0_mid_res", 
+    xwidth = 0.05,
+    yheight = 0.0127,
+    restore_neutron=1)
+AT (0, -0.00003, 0.00003) RELATIVE arm_det_5p0
+ROTATED (37.072*2, 0, 0) RELATIVE arm_det_5p0
+
+
+FINALLY
+%{
+%}
+
+END

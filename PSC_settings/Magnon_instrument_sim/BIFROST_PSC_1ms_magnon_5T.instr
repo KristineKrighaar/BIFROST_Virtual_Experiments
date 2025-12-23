@@ -1,0 +1,1064 @@
+/********************************************************************************
+* 
+* McStas, neutron ray-tracing package
+*         Copyright (C) 1997-2008, All rights reserved
+*         Risoe National Laboratory, Roskilde, Denmark
+*         Institut Laue Langevin, Grenoble, France
+* 
+* This file was written by McStasScript, which is a 
+* python based McStas instrument generator written by 
+* Mads Bertelsen in 2019 while employed at the 
+* European Spallation Source Data Management and 
+* Software Centre
+* 
+* Instrument BIFROST_PSC_1ms_magnon_5T
+* 
+* %Identification
+* Written by: Python McStas Instrument Generator
+* Date: 15:25:32 on November 22, 2025
+* Origin: ESS DMSC
+* %INSTRUMENT_SITE: Generated_instruments
+* 
+* 
+* %Parameters
+* 
+* %End 
+********************************************************************************/
+
+DEFINE INSTRUMENT BIFROST_PSC_1ms_magnon_5T (
+A4 = 20, // Scattering angle from sample
+A3 = 75 // Sample rotation angle
+)
+
+DECLARE 
+%{
+int wedge;
+%}
+
+INITIALIZE 
+%{
+// Start of initialize for generated BIFROST_PSC_1ms_magnon_5T
+%}
+
+TRACE 
+COMPONENT Vir_source = MCPL_input(
+ filename = "PSC_settings/PSC_1ms_OptimalLamBand.mcpl", Emin = 4.5,
+ Emax = 16, E_smear = 0.001,
+ pos_smear = 0.001, dir_smear = 0.05)
+AT (0,0,0) ABSOLUTE
+
+COMPONENT sample_pos = Arm()
+AT (0,0,0.58) ABSOLUTE
+ROTATED (0,0,0) ABSOLUTE
+
+COMPONENT A3_rot = Arm()
+AT (0,0,0) RELATIVE sample_pos
+ROTATED (0,A3,0) RELATIVE sample_pos
+
+COMPONENT A4_rot = Arm()
+AT (0,0,0) RELATIVE sample_pos
+ROTATED (0,A4,0) RELATIVE sample_pos
+
+COMPONENT Magnon = Magnon_oI(
+ radius = 0.005, yheight = 0.01,
+ sigma_abs = 0, sigma_inc = 0,
+ a1 = 4.873, a2 = 4.873,
+ a3 = 3.13, j = 0.304,
+ jx = 0.008, jy = 0.008,
+ jz = -0.056, S = 2.5,
+ D = -0.0182, B = 5,
+ FM = 0, T = 2,
+ e_steps_low = 50, e_steps_high = 50,
+ target_x = sin((A4 + 40 - A3) * M_PI / 180.0), target_y = 0,
+ target_z = cos((A4 + 40 - A3) * M_PI / 180.0), focus_aw = 3.14159,
+ focus_ah = 0.139626)
+AT (0,0,0) RELATIVE A3_rot
+ROTATED (0,0,0) RELATIVE A3_rot
+
+COMPONENT wedge_arm_0 = Arm()
+AT (0,0,0) RELATIVE A4_rot
+ROTATED (0,0,0) RELATIVE A4_rot
+
+COMPONENT ana_arm_1_4_0 = Arm()
+AT (0,0,1.557) RELATIVE wedge_arm_0
+ROTATED (0,0,0) RELATIVE wedge_arm_0
+
+COMPONENT PG_piece_1_4_0_0 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.034879,-0.050095999999999995) RELATIVE ana_arm_1_4_0
+ROTATED (-54.254,90,0) RELATIVE ana_arm_1_4_0
+EXTEND %{
+if (SCATTERED) {wedge = 0;};
+%}
+
+COMPONENT PG_piece_1_4_1_0 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.026376999999999998,-0.037422) RELATIVE ana_arm_1_4_0
+ROTATED (-53.923,90,0) RELATIVE ana_arm_1_4_0
+EXTEND %{
+if (SCATTERED) {wedge = 0;};
+%}
+
+COMPONENT PG_piece_1_4_2_0 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.017728999999999998,-0.024846) RELATIVE ana_arm_1_4_0
+ROTATED (-53.591,90,0) RELATIVE ana_arm_1_4_0
+EXTEND %{
+if (SCATTERED) {wedge = 0;};
+%}
+
+COMPONENT PG_piece_1_4_3_0 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.008936999999999999,-0.012372) RELATIVE ana_arm_1_4_0
+ROTATED (-53.26,90,0) RELATIVE ana_arm_1_4_0
+EXTEND %{
+if (SCATTERED) {wedge = 0;};
+%}
+
+COMPONENT PG_piece_1_4_4_0 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.0,0.0) RELATIVE ana_arm_1_4_0
+ROTATED (-52.928,90,0) RELATIVE ana_arm_1_4_0
+EXTEND %{
+if (SCATTERED) {wedge = 0;};
+%}
+
+COMPONENT PG_piece_1_4_5_0 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.009079,0.012268000000000001) RELATIVE ana_arm_1_4_0
+ROTATED (-52.597,90,0) RELATIVE ana_arm_1_4_0
+EXTEND %{
+if (SCATTERED) {wedge = 0;};
+%}
+
+COMPONENT PG_piece_1_4_6_0 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.0183,0.024429) RELATIVE ana_arm_1_4_0
+ROTATED (-52.265,90,0) RELATIVE ana_arm_1_4_0
+EXTEND %{
+if (SCATTERED) {wedge = 0;};
+%}
+
+COMPONENT PG_piece_1_4_7_0 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.02766,0.036484) RELATIVE ana_arm_1_4_0
+ROTATED (-51.934,90,0) RELATIVE ana_arm_1_4_0
+EXTEND %{
+if (SCATTERED) {wedge = 0;};
+%}
+
+COMPONENT PG_piece_1_4_8_0 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.03716,0.048429) RELATIVE ana_arm_1_4_0
+ROTATED (-51.603,90,0) RELATIVE ana_arm_1_4_0
+EXTEND %{
+if (SCATTERED) {wedge = 0;};
+%}
+
+COMPONENT det_arm_1_4_0 = Arm()
+AT (0,-1.5612402,2.0004613) RELATIVE wedge_arm_0
+ROTATED (0,0,0) RELATIVE wedge_arm_0
+
+COMPONENT det_mid_He3_1_4_0 = Monitor_nD(
+ xwidth = 0.0254, yheight = 0.2988,
+ options = "cylinder, y, bins=100, t, limits=[0.05 0.3], bins=1000", filename = "signal_1Dspace_0_4_1.dat")
+WHEN (wedge == 0)
+AT (0,0,0) RELATIVE det_arm_1_4_0
+ROTATED (0,0,90) RELATIVE det_arm_1_4_0
+
+COMPONENT wedge_arm_10 = Arm()
+AT (0,0,0) RELATIVE A4_rot
+ROTATED (0,10,0) RELATIVE A4_rot
+
+COMPONENT ana_arm_2_4_1 = Arm()
+AT (0,0,1.623) RELATIVE wedge_arm_10
+ROTATED (0,0,0) RELATIVE wedge_arm_10
+
+COMPONENT PG_piece_2_4_0_1 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.036386,-0.05055) RELATIVE ana_arm_2_4_1
+ROTATED (-54.254,90,0) RELATIVE ana_arm_2_4_1
+EXTEND %{
+if (SCATTERED) {wedge = 1;};
+%}
+
+COMPONENT PG_piece_2_4_1_1 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.027509,-0.037756) RELATIVE ana_arm_2_4_1
+ROTATED (-53.923,90,0) RELATIVE ana_arm_2_4_1
+EXTEND %{
+if (SCATTERED) {wedge = 1;};
+%}
+
+COMPONENT PG_piece_2_4_2_1 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.018484999999999998,-0.025065) RELATIVE ana_arm_2_4_1
+ROTATED (-53.591,90,0) RELATIVE ana_arm_2_4_1
+EXTEND %{
+if (SCATTERED) {wedge = 1;};
+%}
+
+COMPONENT PG_piece_2_4_3_1 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.009315,-0.012478999999999999) RELATIVE ana_arm_2_4_1
+ROTATED (-53.26,90,0) RELATIVE ana_arm_2_4_1
+EXTEND %{
+if (SCATTERED) {wedge = 1;};
+%}
+
+COMPONENT PG_piece_2_4_4_1 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.0,0.0) RELATIVE ana_arm_2_4_1
+ROTATED (-52.928,90,0) RELATIVE ana_arm_2_4_1
+EXTEND %{
+if (SCATTERED) {wedge = 1;};
+%}
+
+COMPONENT PG_piece_2_4_5_1 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.009459,0.012369999999999999) RELATIVE ana_arm_2_4_1
+ROTATED (-52.597,90,0) RELATIVE ana_arm_2_4_1
+EXTEND %{
+if (SCATTERED) {wedge = 1;};
+%}
+
+COMPONENT PG_piece_2_4_6_1 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.019059999999999997,0.02463) RELATIVE ana_arm_2_4_1
+ROTATED (-52.265,90,0) RELATIVE ana_arm_2_4_1
+EXTEND %{
+if (SCATTERED) {wedge = 1;};
+%}
+
+COMPONENT PG_piece_2_4_7_1 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.028802,0.036778) RELATIVE ana_arm_2_4_1
+ROTATED (-51.934,90,0) RELATIVE ana_arm_2_4_1
+EXTEND %{
+if (SCATTERED) {wedge = 1;};
+%}
+
+COMPONENT PG_piece_2_4_8_1 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.038685000000000004,0.048813) RELATIVE ana_arm_2_4_1
+ROTATED (-51.603,90,0) RELATIVE ana_arm_2_4_1
+EXTEND %{
+if (SCATTERED) {wedge = 1;};
+%}
+
+COMPONENT det_arm_2_4_1 = Arm()
+AT (0,-1.5612402,2.0664613) RELATIVE wedge_arm_10
+ROTATED (0,0,0) RELATIVE wedge_arm_10
+
+COMPONENT det_mid_He3_2_4_1 = Monitor_nD(
+ xwidth = 0.0254, yheight = 0.3048,
+ options = "cylinder, y, bins=100, t, limits=[0.05 0.3], bins=1000", filename = "signal_1Dspace_1_4_1.dat")
+WHEN (wedge == 1)
+AT (0,0,0) RELATIVE det_arm_2_4_1
+ROTATED (0,0,90) RELATIVE det_arm_2_4_1
+
+COMPONENT wedge_arm_20 = Arm()
+AT (0,0,0) RELATIVE A4_rot
+ROTATED (0,20,0) RELATIVE A4_rot
+
+COMPONENT ana_arm_3_4_2 = Arm()
+AT (0,0,1.701) RELATIVE wedge_arm_20
+ROTATED (0,0,0) RELATIVE wedge_arm_20
+
+COMPONENT PG_piece_3_4_0_2 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.038165,-0.051087) RELATIVE ana_arm_3_4_2
+ROTATED (-54.254,90,0) RELATIVE ana_arm_3_4_2
+EXTEND %{
+if (SCATTERED) {wedge = 2;};
+%}
+
+COMPONENT PG_piece_3_4_1_2 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.028846,-0.038149999999999996) RELATIVE ana_arm_3_4_2
+ROTATED (-53.923,90,0) RELATIVE ana_arm_3_4_2
+EXTEND %{
+if (SCATTERED) {wedge = 2;};
+%}
+
+COMPONENT PG_piece_3_4_2_2 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.019378,-0.025323000000000002) RELATIVE ana_arm_3_4_2
+ROTATED (-53.591,90,0) RELATIVE ana_arm_3_4_2
+EXTEND %{
+if (SCATTERED) {wedge = 2;};
+%}
+
+COMPONENT PG_piece_3_4_3_2 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.009762,-0.012605) RELATIVE ana_arm_3_4_2
+ROTATED (-53.26,90,0) RELATIVE ana_arm_3_4_2
+EXTEND %{
+if (SCATTERED) {wedge = 2;};
+%}
+
+COMPONENT PG_piece_3_4_4_2 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.0,0.0) RELATIVE ana_arm_3_4_2
+ROTATED (-52.928,90,0) RELATIVE ana_arm_3_4_2
+EXTEND %{
+if (SCATTERED) {wedge = 2;};
+%}
+
+COMPONENT PG_piece_3_4_5_2 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.009907000000000001,0.012492000000000001) RELATIVE ana_arm_3_4_2
+ROTATED (-52.597,90,0) RELATIVE ana_arm_3_4_2
+EXTEND %{
+if (SCATTERED) {wedge = 2;};
+%}
+
+COMPONENT PG_piece_3_4_6_2 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.019958,0.024867999999999998) RELATIVE ana_arm_3_4_2
+ROTATED (-52.265,90,0) RELATIVE ana_arm_3_4_2
+EXTEND %{
+if (SCATTERED) {wedge = 2;};
+%}
+
+COMPONENT PG_piece_3_4_7_2 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.030152,0.037127) RELATIVE ana_arm_3_4_2
+ROTATED (-51.934,90,0) RELATIVE ana_arm_3_4_2
+EXTEND %{
+if (SCATTERED) {wedge = 2;};
+%}
+
+COMPONENT PG_piece_3_4_8_2 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.040487,0.049267000000000005) RELATIVE ana_arm_3_4_2
+ROTATED (-51.603,90,0) RELATIVE ana_arm_3_4_2
+EXTEND %{
+if (SCATTERED) {wedge = 2;};
+%}
+
+COMPONENT det_arm_3_4_2 = Arm()
+AT (0,-1.5612402,2.1444613) RELATIVE wedge_arm_20
+ROTATED (0,0,0) RELATIVE wedge_arm_20
+
+COMPONENT det_mid_He3_3_4_2 = Monitor_nD(
+ xwidth = 0.0254, yheight = 0.3119,
+ options = "cylinder, y, bins=100, t, limits=[0.05 0.3], bins=1000", filename = "signal_1Dspace_2_4_1.dat")
+WHEN (wedge == 2)
+AT (0,0,0) RELATIVE det_arm_3_4_2
+ROTATED (0,0,90) RELATIVE det_arm_3_4_2
+
+COMPONENT wedge_arm_30 = Arm()
+AT (0,0,0) RELATIVE A4_rot
+ROTATED (0,30,0) RELATIVE A4_rot
+
+COMPONENT ana_arm_1_4_3 = Arm()
+AT (0,0,1.557) RELATIVE wedge_arm_30
+ROTATED (0,0,0) RELATIVE wedge_arm_30
+
+COMPONENT PG_piece_1_4_0_3 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.034879,-0.050095999999999995) RELATIVE ana_arm_1_4_3
+ROTATED (-54.254,90,0) RELATIVE ana_arm_1_4_3
+EXTEND %{
+if (SCATTERED) {wedge = 3;};
+%}
+
+COMPONENT PG_piece_1_4_1_3 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.026376999999999998,-0.037422) RELATIVE ana_arm_1_4_3
+ROTATED (-53.923,90,0) RELATIVE ana_arm_1_4_3
+EXTEND %{
+if (SCATTERED) {wedge = 3;};
+%}
+
+COMPONENT PG_piece_1_4_2_3 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.017728999999999998,-0.024846) RELATIVE ana_arm_1_4_3
+ROTATED (-53.591,90,0) RELATIVE ana_arm_1_4_3
+EXTEND %{
+if (SCATTERED) {wedge = 3;};
+%}
+
+COMPONENT PG_piece_1_4_3_3 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.008936999999999999,-0.012372) RELATIVE ana_arm_1_4_3
+ROTATED (-53.26,90,0) RELATIVE ana_arm_1_4_3
+EXTEND %{
+if (SCATTERED) {wedge = 3;};
+%}
+
+COMPONENT PG_piece_1_4_4_3 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.0,0.0) RELATIVE ana_arm_1_4_3
+ROTATED (-52.928,90,0) RELATIVE ana_arm_1_4_3
+EXTEND %{
+if (SCATTERED) {wedge = 3;};
+%}
+
+COMPONENT PG_piece_1_4_5_3 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.009079,0.012268000000000001) RELATIVE ana_arm_1_4_3
+ROTATED (-52.597,90,0) RELATIVE ana_arm_1_4_3
+EXTEND %{
+if (SCATTERED) {wedge = 3;};
+%}
+
+COMPONENT PG_piece_1_4_6_3 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.0183,0.024429) RELATIVE ana_arm_1_4_3
+ROTATED (-52.265,90,0) RELATIVE ana_arm_1_4_3
+EXTEND %{
+if (SCATTERED) {wedge = 3;};
+%}
+
+COMPONENT PG_piece_1_4_7_3 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.02766,0.036484) RELATIVE ana_arm_1_4_3
+ROTATED (-51.934,90,0) RELATIVE ana_arm_1_4_3
+EXTEND %{
+if (SCATTERED) {wedge = 3;};
+%}
+
+COMPONENT PG_piece_1_4_8_3 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.03716,0.048429) RELATIVE ana_arm_1_4_3
+ROTATED (-51.603,90,0) RELATIVE ana_arm_1_4_3
+EXTEND %{
+if (SCATTERED) {wedge = 3;};
+%}
+
+COMPONENT det_arm_1_4_3 = Arm()
+AT (0,-1.5612402,2.0004613) RELATIVE wedge_arm_30
+ROTATED (0,0,0) RELATIVE wedge_arm_30
+
+COMPONENT det_mid_He3_1_4_3 = Monitor_nD(
+ xwidth = 0.0254, yheight = 0.2988,
+ options = "cylinder, y, bins=100, t, limits=[0.05 0.3], bins=1000", filename = "signal_1Dspace_3_4_1.dat")
+WHEN (wedge == 3)
+AT (0,0,0) RELATIVE det_arm_1_4_3
+ROTATED (0,0,90) RELATIVE det_arm_1_4_3
+
+COMPONENT wedge_arm_40 = Arm()
+AT (0,0,0) RELATIVE A4_rot
+ROTATED (0,40,0) RELATIVE A4_rot
+
+COMPONENT ana_arm_2_4_4 = Arm()
+AT (0,0,1.623) RELATIVE wedge_arm_40
+ROTATED (0,0,0) RELATIVE wedge_arm_40
+
+COMPONENT PG_piece_2_4_0_4 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.036386,-0.05055) RELATIVE ana_arm_2_4_4
+ROTATED (-54.254,90,0) RELATIVE ana_arm_2_4_4
+EXTEND %{
+if (SCATTERED) {wedge = 4;};
+%}
+
+COMPONENT PG_piece_2_4_1_4 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.027509,-0.037756) RELATIVE ana_arm_2_4_4
+ROTATED (-53.923,90,0) RELATIVE ana_arm_2_4_4
+EXTEND %{
+if (SCATTERED) {wedge = 4;};
+%}
+
+COMPONENT PG_piece_2_4_2_4 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.018484999999999998,-0.025065) RELATIVE ana_arm_2_4_4
+ROTATED (-53.591,90,0) RELATIVE ana_arm_2_4_4
+EXTEND %{
+if (SCATTERED) {wedge = 4;};
+%}
+
+COMPONENT PG_piece_2_4_3_4 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.009315,-0.012478999999999999) RELATIVE ana_arm_2_4_4
+ROTATED (-53.26,90,0) RELATIVE ana_arm_2_4_4
+EXTEND %{
+if (SCATTERED) {wedge = 4;};
+%}
+
+COMPONENT PG_piece_2_4_4_4 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.0,0.0) RELATIVE ana_arm_2_4_4
+ROTATED (-52.928,90,0) RELATIVE ana_arm_2_4_4
+EXTEND %{
+if (SCATTERED) {wedge = 4;};
+%}
+
+COMPONENT PG_piece_2_4_5_4 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.009459,0.012369999999999999) RELATIVE ana_arm_2_4_4
+ROTATED (-52.597,90,0) RELATIVE ana_arm_2_4_4
+EXTEND %{
+if (SCATTERED) {wedge = 4;};
+%}
+
+COMPONENT PG_piece_2_4_6_4 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.019059999999999997,0.02463) RELATIVE ana_arm_2_4_4
+ROTATED (-52.265,90,0) RELATIVE ana_arm_2_4_4
+EXTEND %{
+if (SCATTERED) {wedge = 4;};
+%}
+
+COMPONENT PG_piece_2_4_7_4 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.028802,0.036778) RELATIVE ana_arm_2_4_4
+ROTATED (-51.934,90,0) RELATIVE ana_arm_2_4_4
+EXTEND %{
+if (SCATTERED) {wedge = 4;};
+%}
+
+COMPONENT PG_piece_2_4_8_4 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.038685000000000004,0.048813) RELATIVE ana_arm_2_4_4
+ROTATED (-51.603,90,0) RELATIVE ana_arm_2_4_4
+EXTEND %{
+if (SCATTERED) {wedge = 4;};
+%}
+
+COMPONENT det_arm_2_4_4 = Arm()
+AT (0,-1.5612402,2.0664613) RELATIVE wedge_arm_40
+ROTATED (0,0,0) RELATIVE wedge_arm_40
+
+COMPONENT det_mid_He3_2_4_4 = Monitor_nD(
+ xwidth = 0.0254, yheight = 0.3048,
+ options = "cylinder, y, bins=100, t, limits=[0.05 0.3], bins=1000", filename = "signal_1Dspace_4_4_1.dat")
+WHEN (wedge == 4)
+AT (0,0,0) RELATIVE det_arm_2_4_4
+ROTATED (0,0,90) RELATIVE det_arm_2_4_4
+
+COMPONENT wedge_arm_50 = Arm()
+AT (0,0,0) RELATIVE A4_rot
+ROTATED (0,50,0) RELATIVE A4_rot
+
+COMPONENT ana_arm_3_4_5 = Arm()
+AT (0,0,1.701) RELATIVE wedge_arm_50
+ROTATED (0,0,0) RELATIVE wedge_arm_50
+
+COMPONENT PG_piece_3_4_0_5 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.038165,-0.051087) RELATIVE ana_arm_3_4_5
+ROTATED (-54.254,90,0) RELATIVE ana_arm_3_4_5
+EXTEND %{
+if (SCATTERED) {wedge = 5;};
+%}
+
+COMPONENT PG_piece_3_4_1_5 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.028846,-0.038149999999999996) RELATIVE ana_arm_3_4_5
+ROTATED (-53.923,90,0) RELATIVE ana_arm_3_4_5
+EXTEND %{
+if (SCATTERED) {wedge = 5;};
+%}
+
+COMPONENT PG_piece_3_4_2_5 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.019378,-0.025323000000000002) RELATIVE ana_arm_3_4_5
+ROTATED (-53.591,90,0) RELATIVE ana_arm_3_4_5
+EXTEND %{
+if (SCATTERED) {wedge = 5;};
+%}
+
+COMPONENT PG_piece_3_4_3_5 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.009762,-0.012605) RELATIVE ana_arm_3_4_5
+ROTATED (-53.26,90,0) RELATIVE ana_arm_3_4_5
+EXTEND %{
+if (SCATTERED) {wedge = 5;};
+%}
+
+COMPONENT PG_piece_3_4_4_5 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.0,0.0) RELATIVE ana_arm_3_4_5
+ROTATED (-52.928,90,0) RELATIVE ana_arm_3_4_5
+EXTEND %{
+if (SCATTERED) {wedge = 5;};
+%}
+
+COMPONENT PG_piece_3_4_5_5 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.009907000000000001,0.012492000000000001) RELATIVE ana_arm_3_4_5
+ROTATED (-52.597,90,0) RELATIVE ana_arm_3_4_5
+EXTEND %{
+if (SCATTERED) {wedge = 5;};
+%}
+
+COMPONENT PG_piece_3_4_6_5 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.019958,0.024867999999999998) RELATIVE ana_arm_3_4_5
+ROTATED (-52.265,90,0) RELATIVE ana_arm_3_4_5
+EXTEND %{
+if (SCATTERED) {wedge = 5;};
+%}
+
+COMPONENT PG_piece_3_4_7_5 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.030152,0.037127) RELATIVE ana_arm_3_4_5
+ROTATED (-51.934,90,0) RELATIVE ana_arm_3_4_5
+EXTEND %{
+if (SCATTERED) {wedge = 5;};
+%}
+
+COMPONENT PG_piece_3_4_8_5 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.040487,0.049267000000000005) RELATIVE ana_arm_3_4_5
+ROTATED (-51.603,90,0) RELATIVE ana_arm_3_4_5
+EXTEND %{
+if (SCATTERED) {wedge = 5;};
+%}
+
+COMPONENT det_arm_3_4_5 = Arm()
+AT (0,-1.5612402,2.1444613) RELATIVE wedge_arm_50
+ROTATED (0,0,0) RELATIVE wedge_arm_50
+
+COMPONENT det_mid_He3_3_4_5 = Monitor_nD(
+ xwidth = 0.0254, yheight = 0.3119,
+ options = "cylinder, y, bins=100, t, limits=[0.05 0.3], bins=1000", filename = "signal_1Dspace_5_4_1.dat")
+WHEN (wedge == 5)
+AT (0,0,0) RELATIVE det_arm_3_4_5
+ROTATED (0,0,90) RELATIVE det_arm_3_4_5
+
+COMPONENT wedge_arm_60 = Arm()
+AT (0,0,0) RELATIVE A4_rot
+ROTATED (0,60,0) RELATIVE A4_rot
+
+COMPONENT ana_arm_1_4_6 = Arm()
+AT (0,0,1.557) RELATIVE wedge_arm_60
+ROTATED (0,0,0) RELATIVE wedge_arm_60
+
+COMPONENT PG_piece_1_4_0_6 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.034879,-0.050095999999999995) RELATIVE ana_arm_1_4_6
+ROTATED (-54.254,90,0) RELATIVE ana_arm_1_4_6
+EXTEND %{
+if (SCATTERED) {wedge = 6;};
+%}
+
+COMPONENT PG_piece_1_4_1_6 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.026376999999999998,-0.037422) RELATIVE ana_arm_1_4_6
+ROTATED (-53.923,90,0) RELATIVE ana_arm_1_4_6
+EXTEND %{
+if (SCATTERED) {wedge = 6;};
+%}
+
+COMPONENT PG_piece_1_4_2_6 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.017728999999999998,-0.024846) RELATIVE ana_arm_1_4_6
+ROTATED (-53.591,90,0) RELATIVE ana_arm_1_4_6
+EXTEND %{
+if (SCATTERED) {wedge = 6;};
+%}
+
+COMPONENT PG_piece_1_4_3_6 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.008936999999999999,-0.012372) RELATIVE ana_arm_1_4_6
+ROTATED (-53.26,90,0) RELATIVE ana_arm_1_4_6
+EXTEND %{
+if (SCATTERED) {wedge = 6;};
+%}
+
+COMPONENT PG_piece_1_4_4_6 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.0,0.0) RELATIVE ana_arm_1_4_6
+ROTATED (-52.928,90,0) RELATIVE ana_arm_1_4_6
+EXTEND %{
+if (SCATTERED) {wedge = 6;};
+%}
+
+COMPONENT PG_piece_1_4_5_6 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.009079,0.012268000000000001) RELATIVE ana_arm_1_4_6
+ROTATED (-52.597,90,0) RELATIVE ana_arm_1_4_6
+EXTEND %{
+if (SCATTERED) {wedge = 6;};
+%}
+
+COMPONENT PG_piece_1_4_6_6 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.0183,0.024429) RELATIVE ana_arm_1_4_6
+ROTATED (-52.265,90,0) RELATIVE ana_arm_1_4_6
+EXTEND %{
+if (SCATTERED) {wedge = 6;};
+%}
+
+COMPONENT PG_piece_1_4_7_6 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.02766,0.036484) RELATIVE ana_arm_1_4_6
+ROTATED (-51.934,90,0) RELATIVE ana_arm_1_4_6
+EXTEND %{
+if (SCATTERED) {wedge = 6;};
+%}
+
+COMPONENT PG_piece_1_4_8_6 = Monochromator_flat(
+ zwidth = 0.1756, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.03716,0.048429) RELATIVE ana_arm_1_4_6
+ROTATED (-51.603,90,0) RELATIVE ana_arm_1_4_6
+EXTEND %{
+if (SCATTERED) {wedge = 6;};
+%}
+
+COMPONENT det_arm_1_4_6 = Arm()
+AT (0,-1.5612402,2.0004613) RELATIVE wedge_arm_60
+ROTATED (0,0,0) RELATIVE wedge_arm_60
+
+COMPONENT det_mid_He3_1_4_6 = Monitor_nD(
+ xwidth = 0.0254, yheight = 0.2988,
+ options = "cylinder, y, bins=100, t, limits=[0.05 0.3], bins=1000", filename = "signal_1Dspace_6_4_1.dat")
+WHEN (wedge == 6)
+AT (0,0,0) RELATIVE det_arm_1_4_6
+ROTATED (0,0,90) RELATIVE det_arm_1_4_6
+
+COMPONENT wedge_arm_70 = Arm()
+AT (0,0,0) RELATIVE A4_rot
+ROTATED (0,70,0) RELATIVE A4_rot
+
+COMPONENT ana_arm_2_4_7 = Arm()
+AT (0,0,1.623) RELATIVE wedge_arm_70
+ROTATED (0,0,0) RELATIVE wedge_arm_70
+
+COMPONENT PG_piece_2_4_0_7 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.036386,-0.05055) RELATIVE ana_arm_2_4_7
+ROTATED (-54.254,90,0) RELATIVE ana_arm_2_4_7
+EXTEND %{
+if (SCATTERED) {wedge = 7;};
+%}
+
+COMPONENT PG_piece_2_4_1_7 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.027509,-0.037756) RELATIVE ana_arm_2_4_7
+ROTATED (-53.923,90,0) RELATIVE ana_arm_2_4_7
+EXTEND %{
+if (SCATTERED) {wedge = 7;};
+%}
+
+COMPONENT PG_piece_2_4_2_7 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.018484999999999998,-0.025065) RELATIVE ana_arm_2_4_7
+ROTATED (-53.591,90,0) RELATIVE ana_arm_2_4_7
+EXTEND %{
+if (SCATTERED) {wedge = 7;};
+%}
+
+COMPONENT PG_piece_2_4_3_7 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.009315,-0.012478999999999999) RELATIVE ana_arm_2_4_7
+ROTATED (-53.26,90,0) RELATIVE ana_arm_2_4_7
+EXTEND %{
+if (SCATTERED) {wedge = 7;};
+%}
+
+COMPONENT PG_piece_2_4_4_7 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.0,0.0) RELATIVE ana_arm_2_4_7
+ROTATED (-52.928,90,0) RELATIVE ana_arm_2_4_7
+EXTEND %{
+if (SCATTERED) {wedge = 7;};
+%}
+
+COMPONENT PG_piece_2_4_5_7 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.009459,0.012369999999999999) RELATIVE ana_arm_2_4_7
+ROTATED (-52.597,90,0) RELATIVE ana_arm_2_4_7
+EXTEND %{
+if (SCATTERED) {wedge = 7;};
+%}
+
+COMPONENT PG_piece_2_4_6_7 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.019059999999999997,0.02463) RELATIVE ana_arm_2_4_7
+ROTATED (-52.265,90,0) RELATIVE ana_arm_2_4_7
+EXTEND %{
+if (SCATTERED) {wedge = 7;};
+%}
+
+COMPONENT PG_piece_2_4_7_7 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.028802,0.036778) RELATIVE ana_arm_2_4_7
+ROTATED (-51.934,90,0) RELATIVE ana_arm_2_4_7
+EXTEND %{
+if (SCATTERED) {wedge = 7;};
+%}
+
+COMPONENT PG_piece_2_4_8_7 = Monochromator_flat(
+ zwidth = 0.1816, yheight = 0.0135,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.038685000000000004,0.048813) RELATIVE ana_arm_2_4_7
+ROTATED (-51.603,90,0) RELATIVE ana_arm_2_4_7
+EXTEND %{
+if (SCATTERED) {wedge = 7;};
+%}
+
+COMPONENT det_arm_2_4_7 = Arm()
+AT (0,-1.5612402,2.0664613) RELATIVE wedge_arm_70
+ROTATED (0,0,0) RELATIVE wedge_arm_70
+
+COMPONENT det_mid_He3_2_4_7 = Monitor_nD(
+ xwidth = 0.0254, yheight = 0.3048,
+ options = "cylinder, y, bins=100, t, limits=[0.05 0.3], bins=1000", filename = "signal_1Dspace_7_4_1.dat")
+WHEN (wedge == 7)
+AT (0,0,0) RELATIVE det_arm_2_4_7
+ROTATED (0,0,90) RELATIVE det_arm_2_4_7
+
+COMPONENT wedge_arm_80 = Arm()
+AT (0,0,0) RELATIVE A4_rot
+ROTATED (0,80,0) RELATIVE A4_rot
+
+COMPONENT ana_arm_3_4_8 = Arm()
+AT (0,0,1.701) RELATIVE wedge_arm_80
+ROTATED (0,0,0) RELATIVE wedge_arm_80
+
+COMPONENT PG_piece_3_4_0_8 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.038165,-0.051087) RELATIVE ana_arm_3_4_8
+ROTATED (-54.254,90,0) RELATIVE ana_arm_3_4_8
+EXTEND %{
+if (SCATTERED) {wedge = 8;};
+%}
+
+COMPONENT PG_piece_3_4_1_8 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.028846,-0.038149999999999996) RELATIVE ana_arm_3_4_8
+ROTATED (-53.923,90,0) RELATIVE ana_arm_3_4_8
+EXTEND %{
+if (SCATTERED) {wedge = 8;};
+%}
+
+COMPONENT PG_piece_3_4_2_8 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.019378,-0.025323000000000002) RELATIVE ana_arm_3_4_8
+ROTATED (-53.591,90,0) RELATIVE ana_arm_3_4_8
+EXTEND %{
+if (SCATTERED) {wedge = 8;};
+%}
+
+COMPONENT PG_piece_3_4_3_8 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.009762,-0.012605) RELATIVE ana_arm_3_4_8
+ROTATED (-53.26,90,0) RELATIVE ana_arm_3_4_8
+EXTEND %{
+if (SCATTERED) {wedge = 8;};
+%}
+
+COMPONENT PG_piece_3_4_4_8 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,0.0,0.0) RELATIVE ana_arm_3_4_8
+ROTATED (-52.928,90,0) RELATIVE ana_arm_3_4_8
+EXTEND %{
+if (SCATTERED) {wedge = 8;};
+%}
+
+COMPONENT PG_piece_3_4_5_8 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.009907000000000001,0.012492000000000001) RELATIVE ana_arm_3_4_8
+ROTATED (-52.597,90,0) RELATIVE ana_arm_3_4_8
+EXTEND %{
+if (SCATTERED) {wedge = 8;};
+%}
+
+COMPONENT PG_piece_3_4_6_8 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.019958,0.024867999999999998) RELATIVE ana_arm_3_4_8
+ROTATED (-52.265,90,0) RELATIVE ana_arm_3_4_8
+EXTEND %{
+if (SCATTERED) {wedge = 8;};
+%}
+
+COMPONENT PG_piece_3_4_7_8 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.030152,0.037127) RELATIVE ana_arm_3_4_8
+ROTATED (-51.934,90,0) RELATIVE ana_arm_3_4_8
+EXTEND %{
+if (SCATTERED) {wedge = 8;};
+%}
+
+COMPONENT PG_piece_3_4_8_8 = Monochromator_flat(
+ zwidth = 0.1886, yheight = 0.014,
+ mosaich = 50, mosaicv = 50,
+ DM = 3.355)
+AT (0,-0.040487,0.049267000000000005) RELATIVE ana_arm_3_4_8
+ROTATED (-51.603,90,0) RELATIVE ana_arm_3_4_8
+EXTEND %{
+if (SCATTERED) {wedge = 8;};
+%}
+
+COMPONENT det_arm_3_4_8 = Arm()
+AT (0,-1.5612402,2.1444613) RELATIVE wedge_arm_80
+ROTATED (0,0,0) RELATIVE wedge_arm_80
+
+COMPONENT det_mid_He3_3_4_8 = Monitor_nD(
+ xwidth = 0.0254, yheight = 0.3119,
+ options = "cylinder, y, bins=100, t, limits=[0.05 0.3], bins=1000", filename = "signal_1Dspace_8_4_1.dat")
+WHEN (wedge == 8)
+AT (0,0,0) RELATIVE det_arm_3_4_8
+ROTATED (0,0,90) RELATIVE det_arm_3_4_8
+
+FINALLY 
+%{
+// Start of finally for generated BIFROST_PSC_1ms_magnon_5T
+%}
+
+END

@@ -1,0 +1,50 @@
+#!/bin/bash
+
+#SBATCH --job-name=BIFROST_lowE
+#SBATCH --error=err_BIFROST_lowE.stderr
+#SBATCH --output=out_BIFROST_lowE.stdout
+#SBATCH --nodes 1-1
+#SBATCH --partition quark
+#SBATCH --time=23:59:00
+# the --exclusive is needed when running OpenMPI
+# it will allocate 1x12 core per node
+#SBATCH --exclusive
+
+NUMCORES=`echo "$SLURM_NNODES 56 * p "| dc`
+
+
+source /etc/profile.d/modules.sh
+module avail
+module purge
+export OMPI_MCA_btl=^vader,tcp,openib
+module load mcstas/3.2
+module load gcc/10.2.0
+module load openmpi/4.0_gcc1020
+
+### Set up mcrun line
+# mcrun -c --mpi=$NUMCORES -d test_perspective_pulse_data_1 -n 1e11 BL18_SENJU_generated.instr L_min=2.2 L_max=2.21
+
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_0 -n 1000000000 -N 15  WaveMin=3.994  WaveMax=5.604  L_0=3.924  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=0  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_1 -n 1000000000 -N 15  WaveMin=3.3925  WaveMax=5.002  L_0=3.347  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=1  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_2 -n 1000000000 -N 15  WaveMin=3.3186  WaveMax=4.572  L_0=2.945  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=2  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_3 -n 1000000000 -N 15  WaveMin=3.097  WaveMax=4.088  L_0=2.643  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=3  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_4 -n 1000000000 -N 15  WaveMin=2.914  WaveMax=3.594  L_0=2.404  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=4  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_5 -n 1000000000 -N 15  WaveMin=2.76  WaveMax=3.359  L_0=2.209  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=5  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_6 -n 1000000000 -N 15  WaveMin=2.627  WaveMax=3.166  L_0=2.0468  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=6  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_7 -n 1000000000 -N 15  WaveMin=2.511  WaveMax=3.004  L_0=1.907  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=7  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_8 -n 1000000000 -N 15  WaveMin=2.408  WaveMax=2.865  L_0=1.786  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=8  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_9 -n 1000000000 -N 15  WaveMin=2.317  WaveMax=2.744  L_0=1.68  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=9  t_Focus_width=1.2
+
+mcrun -c --mpi=$NUMCORES BifrostFullInstrument_v1_inelastic_linewidths.instr -d v11_Ei_10 -n 1000000000 -N 15  WaveMin=2.025  WaveMax=2.638  L_0=1.586  chopPulseOpening=0.0001,0.001  DivSlit0_width=0.1  DivSlit1_width=0.1  DivSlit2_width=0.1  DivSlit3_width=0.1  Npulse=1  print=0  makeVirtualSource=0  printMValues=0  power=2  BWopen=161  sample_radius=0.005  A3=0  A4=45  Etrans=10  t_Focus_width=1.2
+
+
