@@ -51,6 +51,11 @@ Recommended environment:
 
 Dependencies are not currently pinned in a `requirements.txt` file and may need to be installed manually depending on the notebooks used.
 
+It is often the case that the *KGS* libary is used. This is a personal libary of Kristine Krighaar and details on content can be found on. 
+GitHub: [KGS](https://github.com/KristineKrighaar/KGS)
+
+NOTE: A copy of the python script containning fitting routines 'fitting.py' are included in the repo.
+
 ---
 
 ## Getting Started
@@ -73,13 +78,6 @@ Dependencies are not currently pinned in a `requirements.txt` file and may need 
    ```
 
 4. Navigate to the relevant directory and open a notebook to begin.
-
----
-
-## Workflows
-
-It is often the case that the *KGS* libary is used. This is a personal libary of Kristine Krighaar and details on content can be found on. 
-GitHub: [KGS](https://github.com/KristineKrighaar/KGS)
 
 ---
 
