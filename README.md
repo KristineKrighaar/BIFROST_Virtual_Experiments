@@ -47,7 +47,7 @@ Recommended environment:
 - Python 3.8+
 - Jupyter Notebook or JupyterLab
 - Common scientific Python packages (e.g. `numpy`, `scipy`, `matplotlib`)
-- McStas and McStasScript
+- Neutron specific packages: McStas, McStasScript and scipp
 
 Dependencies are not currently pinned in a `requirements.txt` file and may need to be installed manually depending on the notebooks used.
 
